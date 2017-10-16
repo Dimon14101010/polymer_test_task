@@ -1,0 +1,20 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+
+<dom-module id="d3-chart">
+    <template>
+        <iron-pages id="charts" selected="0">
+            <section><temp-chart></temp-chart></section>
+            <section><press-chart></press-chart></section>
+        </iron-pages>
+        <paper-button on-tap="toggle">toggle data</paper-button>
+    </template>
+    <script>
+        Polymer ({
+            is:'d3-chart',
+            toggle: function () {
+                this.$.charts.selectNext();
+            }
+        })
+    </script>
+</dom-module>

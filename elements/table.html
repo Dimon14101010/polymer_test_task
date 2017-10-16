@@ -1,0 +1,66 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js"></script>
+
+<dom-module id="my-table">
+    <template>
+        <style>
+            table {
+                margin: 0;
+                padding: 0;
+                border-collapse: collapse;
+                text-align: center;
+                font-size: 1.3em;
+            }
+            th {
+                background-color: #64dd17;
+                padding: 10px;
+            }
+            tr:nth-child(even) {
+                background-color: lightgray;
+            }
+            td {
+                padding: 10px;
+            }
+        </style>
+        <iron-ajax
+        auto
+        url="https://api.openweathermap.org/data/2.5/forecast/daily?q=London&cnt=10&APPID=bd5e378503939ddaee76f12ad7a97608&units=metric"
+        handle-as="json"
+        last-response="{{response}}"></iron-ajax>
+        <h2>weather in {{response.city.name}}</h2>
+        <table>
+            <tr>
+                <th>date</th>
+                <th>temperature</th>
+                <th>pressure</th>
+                <th>humidity</th>
+                <th>weather condition</th>
+            </tr>
+            <template is="dom-repeat" items="{{response.list}}">
+                <tr>
+                    <td>{{convertDate(item.dt)}}</td>
+                    <td>{{item.temp.day}} </td>
+                    <td>{{item.pressure}}</td>
+                    <td>{{item.humidity}}</td>
+                    <td>{{getWeather(item.weather)}}</td>
+                </tr>
+            </template>
+        </table>
+    </template>
+    <script>
+        Polymer ({
+            is:"my-table",
+            convertDate: function (data) {
+               return moment(data*1000).format('dddd Do')
+            },
+            getWeather: function (weather) {
+                var newArr = [];
+                weather.forEach(function (res){
+                    newArr.push(res.description);
+                });
+                return newArr
+            }
+        })
+    </script>
+</dom-module>
